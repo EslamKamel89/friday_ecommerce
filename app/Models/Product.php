@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Product extends Model {
 	use HasFactory;
 	protected $fillable = [
-		'cateogry_id',
+		'category_id',
 		'brand_id',
 		'name',
 		'slug',
@@ -28,7 +28,7 @@ class Product extends Model {
 	];
 
 	public function category(): BelongsTo {
-		return $this->belognsTo( Category::class);
+		return $this->belongsTo( Category::class);
 	}
 	public function brand(): BelongsTo {
 		return $this->belongsTo( Brand::class);
