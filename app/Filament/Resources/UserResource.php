@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\UserResource\RelationManagers\OrdersRelationManager;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
@@ -25,7 +26,7 @@ class UserResource extends Resource {
 
 	public static function form( Form $form ): Form {
 		return $form
-			->schema( [
+			->schema( [ 
 				TextInput::make( 'name' )
 					->required( fn( Livewire $livewire ): bool => $livewire->getResourcePageName() == 'create' )
 					->maxLength( 255 ),
@@ -46,7 +47,7 @@ class UserResource extends Resource {
 
 	public static function table( Table $table ): Table {
 		return $table
-			->columns( [
+			->columns( [ 
 				TextColumn::make( 'name' )
 					->searchable(),
 				TextColumn::make( 'email' )
@@ -67,28 +68,28 @@ class UserResource extends Resource {
 			->filters( [
 				//
 			] )
-			->actions( [
-				ActionGroup::make( [
+			->actions( [ 
+				ActionGroup::make( [ 
 					Tables\Actions\EditAction::make(),
 					Tables\Actions\DeleteAction::make(),
 					Tables\Actions\ViewAction::make(),
 				] ),
 			] )
-			->bulkActions( [
-				Tables\Actions\BulkActionGroup::make( [
+			->bulkActions( [ 
+				Tables\Actions\BulkActionGroup::make( [ 
 					Tables\Actions\DeleteBulkAction::make(),
 				] ),
 			] );
 	}
 
 	public static function getRelations(): array {
-		return [
-			//
+		return [ 
+			OrdersRelationManager::class,
 		];
 	}
 
 	public static function getPages(): array {
-		return [
+		return [ 
 			'index' => Pages\ListUsers::route( '/' ),
 			'create' => Pages\CreateUser::route( '/create' ),
 			'edit' => Pages\EditUser::route( '/{record}/edit' ),
