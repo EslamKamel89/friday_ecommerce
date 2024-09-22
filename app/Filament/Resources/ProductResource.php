@@ -25,20 +25,23 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class ProductResource extends Resource {
 	protected static ?string $model = Product::class;
+	protected static ?string $recordTitleAttribute = 'name';
+	protected static ?int $navigationSort = 4;
 
 	protected static ?string $navigationIcon = 'heroicon-o-light-bulb';
 
 	public static function form( Form $form ): Form {
 		return $form
-			->schema( [
+			->schema( [ 
 				//!
-				Group::make()->schema( [
-					Section::make( 'Product Details' )->schema( [
+				Group::make()->schema( [ 
+					Section::make( 'Product Details' )->schema( [ 
 						TextInput::make( 'name' )
 							->required()
 							->live( true )
@@ -54,7 +57,7 @@ class ProductResource extends Resource {
 					] )->columns( 2 ),
 					//!
 					Section::make( 'Images' )
-						->schema( [
+						->schema( [ 
 							FileUpload::make( 'images' )
 								->multiple()
 								->maxFiles( 5 )
@@ -63,16 +66,16 @@ class ProductResource extends Resource {
 						] )->columns( 2 ),
 				] )->columnSpan( 2 ),
 				//!
-				Group::make()->schema( [
+				Group::make()->schema( [ 
 					Section::make( 'Price' )
-						->schema( [
+						->schema( [ 
 							TextInput::make( 'price' )
 								->required()
 								->numeric()
 								->prefix( '$' ),
 						] )->columnSpanFull(),
 					Section::make( 'Associations' )
-						->schema( [
+						->schema( [ 
 							Select::make( 'category_id' )
 								->relationship( 'category', 'name' )
 								->searchable()
@@ -84,7 +87,7 @@ class ProductResource extends Resource {
 								->preload()
 								->required(),
 						] )->columnSpanFull(),
-					Section::make( 'Status' )->schema( [
+					Section::make( 'Status' )->schema( [ 
 						Toggle::make( 'in_stock' )
 							->label( 'In Stock' )
 							->default( true )
@@ -108,7 +111,7 @@ class ProductResource extends Resource {
 
 	public static function table( Table $table ): Table {
 		return $table
-			->columns( [
+			->columns( [ 
 				ImageColumn::make( 'images' )
 					->circular()
 					->stacked(),
@@ -142,7 +145,7 @@ class ProductResource extends Resource {
 					->sortable()
 					->toggleable( isToggledHiddenByDefault: true ),
 			] )
-			->filters( [
+			->filters( [ 
 				SelectFilter::make( 'category' )
 					->relationship( 'category', 'name' )
 					->preload()
@@ -152,15 +155,15 @@ class ProductResource extends Resource {
 					->preload()
 					->multiple(),
 			] )
-			->actions( [
-				ActionGroup::make( [
+			->actions( [ 
+				ActionGroup::make( [ 
 					Tables\Actions\EditAction::make(),
 					Tables\Actions\ViewAction::make(),
 					Tables\Actions\DeleteAction::make(),
 				] )
 			] )
-			->bulkActions( [
-				Tables\Actions\BulkActionGroup::make( [
+			->bulkActions( [ 
+				Tables\Actions\BulkActionGroup::make( [ 
 					Tables\Actions\DeleteBulkAction::make(),
 				] ),
 			] );
@@ -173,10 +176,14 @@ class ProductResource extends Resource {
 	}
 
 	public static function getPages(): array {
-		return [
+		return [ 
 			'index' => Pages\ListProducts::route( '/' ),
 			'create' => Pages\CreateProduct::route( '/create' ),
 			'edit' => Pages\EditProduct::route( '/{record}/edit' ),
+			'view' => Pages\ViewProduct::route( '/{record}' ),
 		];
+	}
+	public static function getGlobalSearchResultUrl( Model $record ): string {
+		return route( 'filament.admin.resources.products.view', [ 'record' => $record ] );
 	}
 }

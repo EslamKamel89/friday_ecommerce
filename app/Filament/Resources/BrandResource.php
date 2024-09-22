@@ -21,19 +21,22 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class BrandResource extends Resource {
 	protected static ?string $model = Brand::class;
+	protected static ?string $recordTitleAttribute = 'name';
+	protected static ?int $navigationSort = 3;
 
 	protected static ?string $navigationIcon = 'heroicon-o-globe-europe-africa';
 
 	public static function form( Form $form ): Form {
 		return $form
-			->schema( [
-				Section::make( [
-					Grid::make()->schema( [
+			->schema( [ 
+				Section::make( [ 
+					Grid::make()->schema( [ 
 						TextInput::make( 'name' )
 							->required()
 							->live( true )
@@ -58,7 +61,7 @@ class BrandResource extends Resource {
 
 	public static function table( Table $table ): Table {
 		return $table
-			->columns( [
+			->columns( [ 
 				ImageColumn::make( 'image' )->circular(),
 				TextColumn::make( 'name' )
 					->searchable(),
@@ -78,15 +81,15 @@ class BrandResource extends Resource {
 			->filters( [
 				//
 			] )
-			->actions( [
-				ActionGroup::make( [
+			->actions( [ 
+				ActionGroup::make( [ 
 					Tables\Actions\EditAction::make(),
 					Tables\Actions\ViewAction::make(),
 					Tables\Actions\DeleteAction::make(),
 				] )
 			] )
-			->bulkActions( [
-				Tables\Actions\BulkActionGroup::make( [
+			->bulkActions( [ 
+				Tables\Actions\BulkActionGroup::make( [ 
 					Tables\Actions\DeleteBulkAction::make(),
 				] ),
 			] );
@@ -99,10 +102,14 @@ class BrandResource extends Resource {
 	}
 
 	public static function getPages(): array {
-		return [
+		return [ 
 			'index' => Pages\ListBrands::route( '/' ),
 			'create' => Pages\CreateBrand::route( '/create' ),
 			'edit' => Pages\EditBrand::route( '/{record}/edit' ),
+			'view' => Pages\ViewBrand::route( '/{record}' ),
 		];
+	}
+	public static function getGlobalSearchResultUrl( Model $record ): string {
+		return route( 'filament.admin.resources.brands.view', [ 'record' => $record ] );
 	}
 }

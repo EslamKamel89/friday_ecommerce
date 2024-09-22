@@ -21,6 +21,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Set;
 use Illuminate\Support\Str;
@@ -29,12 +30,14 @@ class CategoryResource extends Resource {
 	protected static ?string $model = Category::class;
 
 	protected static ?string $navigationIcon = 'heroicon-o-tag';
+	protected static ?string $recordTitleAttribute = 'name';
+	protected static ?int $navigationSort = 2;
 
 	public static function form( Form $form ): Form {
 		return $form
-			->schema( [
-				Section::make( [
-					Grid::make()->schema( [
+			->schema( [ 
+				Section::make( [ 
+					Grid::make()->schema( [ 
 						TextInput::make( 'name' )
 							->required()
 							->afterStateUpdated( function (string $state, Set $set, string $operation) {
@@ -60,7 +63,7 @@ class CategoryResource extends Resource {
 
 	public static function table( Table $table ): Table {
 		return $table
-			->columns( [
+			->columns( [ 
 				ImageColumn::make( 'image' )->circular(),
 				TextColumn::make( 'name' )
 					->searchable(),
@@ -80,15 +83,15 @@ class CategoryResource extends Resource {
 			->filters( [
 				//
 			] )
-			->actions( [
-				ActionGroup::make( [
+			->actions( [ 
+				ActionGroup::make( [ 
 					Tables\Actions\EditAction::make(),
 					Tables\Actions\DeleteAction::make(),
 					Tables\Actions\ViewAction::make(),
 				] )
 			] )
-			->bulkActions( [
-				Tables\Actions\BulkActionGroup::make( [
+			->bulkActions( [ 
+				Tables\Actions\BulkActionGroup::make( [ 
 					Tables\Actions\DeleteBulkAction::make(),
 				] ),
 			] );
@@ -101,10 +104,14 @@ class CategoryResource extends Resource {
 	}
 
 	public static function getPages(): array {
-		return [
+		return [ 
 			'index' => Pages\ListCategories::route( '/' ),
 			'create' => Pages\CreateCategory::route( '/create' ),
 			'edit' => Pages\EditCategory::route( '/{record}/edit' ),
+			'view' => Pages\ViewCategory::route( '/{record}' ),
 		];
+	}
+	public static function getGlobalSearchResultUrl( Model $record ): string {
+		return route( 'filament.admin.resources.categories.view', [ 'record' => $record ] );
 	}
 }

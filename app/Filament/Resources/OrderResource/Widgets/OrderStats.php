@@ -8,7 +8,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Number;
 
 class OrderStats extends BaseWidget {
-
+	protected static ?int $sort = 2;
 	// protected static ?string $pollingInterval = null;
 	protected function getStats(): array {
 		return [ 
