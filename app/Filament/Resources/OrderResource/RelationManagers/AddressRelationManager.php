@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\OrderResource\RelationManagers;
 
+use Filament\Actions\Modal\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -12,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,7 +21,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AddressRelationManager extends RelationManager {
 	protected static string $relationship = 'address';
-
+	public function isReadOnly(): bool {
+		return false;
+	}
 	public function form( Form $form ): Form {
 		return $form
 			->schema( [ 
@@ -85,7 +89,8 @@ class AddressRelationManager extends RelationManager {
 				//
 			] )
 			->headerActions( [ 
-				Tables\Actions\CreateAction::make(),
+				CreateAction::make(),
+				// Action::make( 'test' ),
 			] )
 			->actions( [ 
 				ActionGroup::make( [ 
