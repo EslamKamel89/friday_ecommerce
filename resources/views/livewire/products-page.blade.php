@@ -63,8 +63,9 @@
                                 </label>
                             </li>
                             <li class="mb-4">
-                                <label for="" class="flex items-center dark:text-gray-300">
-                                    <input type="checkbox" class="w-4 h-4 mr-2">
+                                <label for="sale" class="flex items-center dark:text-gray-300">
+                                    <input type="checkbox" id="sale" value="1" wire:model.live="onSale"
+                                        class="w-4 h-4 mr-2">
                                     <span class="text-lg dark:text-gray-400">On Sale</span>
                                 </label>
                             </li>

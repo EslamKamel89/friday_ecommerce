@@ -22,6 +22,8 @@ class ProductsPage extends Component {
 
 	#[Url ]
 	public $featured;
+	#[Url ]
+	public $onSale;
 
 	public function render() {
 		$products = Product::where( 'is_active', true )
@@ -40,6 +42,11 @@ class ProductsPage extends Component {
 					return $query;
 				}
 				return $query->where( 'is_featured', $this->featured );
+			} )->where( function (Builder $query) {
+				if ( $this->onSale != '1' ) {
+					return $query;
+				}
+				return $query->where( 'on_sale', $this->onSale );
 			} )
 			->simplePaginate( 6 );
 		$categories = Category::where( 'is_active', true )->get();
