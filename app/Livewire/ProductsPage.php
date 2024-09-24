@@ -17,6 +17,12 @@ class ProductsPage extends Component {
 	#[Url ]
 	public $selectedCategories = [];
 
+	#[Url ]
+	public $selectedBrands = [];
+
+	#[Url ]
+	public $featured;
+
 	public function render() {
 		$products = Product::where( 'is_active', true )
 			->where( function (Builder $query) {
@@ -24,6 +30,16 @@ class ProductsPage extends Component {
 					return $query;
 				}
 				return $query->whereIn( 'category_id', $this->selectedCategories );
+			} )->where( function (Builder $query) {
+				if ( collect( $this->selectedBrands )->isEmpty() ) {
+					return $query;
+				}
+				return $query->whereIn( 'brand_id', $this->selectedBrands );
+			} )->where( function (Builder $query) {
+				if ( $this->featured != '1' ) {
+					return $query;
+				}
+				return $query->where( 'is_featured', $this->featured );
 			} )
 			->simplePaginate( 6 );
 		$categories = Category::where( 'is_active', true )->get();
