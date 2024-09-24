@@ -20,7 +20,7 @@ Route::get( '/', HomePage::class)->name( 'home' );
 Route::get( '/categories', CategoriesPage::class)->name( 'categories.index' );
 Route::get( '/products', ProductsPage::class)->name( 'products.index' );
 Route::get( '/cart', CartPage::class)->name( 'cart' );
-Route::get( '/products/product_one', ProductDetailPage::class)->name( 'products.show' );
+Route::get( '/products/{product:slug}', ProductDetailPage::class)->name( 'products.show' );
 Route::get( '/checkout', CheckoutPage::class)->name( 'checkout' );
 Route::get( '/my-orders', MyOrdersPage::class)->name( 'orders.index' );
 Route::get( '/my-orders/{order}', MyOrderDetailPage::class)->name( 'orders.show' );
