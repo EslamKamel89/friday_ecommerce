@@ -136,6 +136,8 @@ class ProductResource extends Resource {
 					->boolean(),
 				IconColumn::make( 'on_sale' )
 					->boolean(),
+				IconColumn::make( 'in_stock' )
+					->boolean(),
 				TextColumn::make( 'created_at' )
 					->dateTime()
 					->sortable()

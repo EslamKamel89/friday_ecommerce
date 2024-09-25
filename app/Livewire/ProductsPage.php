@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -22,8 +23,21 @@ class ProductsPage extends Component {
 
 	#[Url ]
 	public $featured;
+
 	#[Url ]
 	public $onSale;
+
+	#[Url ]
+	public $price;
+
+	#[Computed(true, 120) ]
+	public function minPrice(): float {
+		return Product::min( 'price' );
+	}
+	#[Computed(true, 120) ]
+	public function maxPrice(): float {
+		return Product::max( 'price' );
+	}
 
 	public function render() {
 		$products = Product::where( 'is_active', true )
@@ -47,6 +61,11 @@ class ProductsPage extends Component {
 					return $query;
 				}
 				return $query->where( 'on_sale', $this->onSale );
+			} )->where( function (Builder $query) {
+				if ( $this->price == null ) {
+					return $query;
+				}
+				return $query->where( 'price', '<=', $this->price );
 			} )
 			->simplePaginate( 6 );
 		$categories = Category::where( 'is_active', true )->get();
