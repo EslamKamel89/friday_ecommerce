@@ -30,6 +30,9 @@ class ProductsPage extends Component {
 	#[Url ]
 	public $price;
 
+	#[Url ]
+	public $sortType = 'latest';
+
 	#[Computed(true, 120) ]
 	public function minPrice(): float {
 		return Product::min( 'price' );
@@ -67,6 +70,9 @@ class ProductsPage extends Component {
 				}
 				return $query->where( 'price', '<=', $this->price );
 			} )
+			->orderBy(
+				$this->sortType == 'latest' ? 'created_at' : 'price',
+				$this->sortType == 'latest' ? 'desc' : 'asc' )
 			->simplePaginate( 6 );
 		$categories = Category::where( 'is_active', true )->get();
 		$brands = Brand::where( 'is_active', true )->get();
