@@ -234,7 +234,7 @@
                 <!-- Brand item foreach ------------------------------------------>
                 @foreach ( $brands as $brand )
 					<div class="rounded-lg bg-white shadow-md dark:bg-gray-800" wire:key="{{'brand ' . $brand->id}}">
-						<a href="" class="">
+						<a href="{{route( 'products.index', [ 'selectedBrands' => [ $brand->id ] ] )}}" class="">
 							<img src="{{asset( 'storage/' . $brand->image )}}" alt="{{$brand->name}}"
 								class="h-64 w-full rounded-t-lg object-cover" />
 						</a>
@@ -283,7 +283,7 @@
                 @foreach ( $categories as $category )
 					<a wire:key="{{'category ' . $category->id}}"
 						class="group flex flex-col rounded-xl border bg-white shadow-sm transition hover:shadow-md dark:border-gray-800 dark:bg-slate-900 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-						href="#">
+						href="{{route( 'products.index', [ 'selectedCategories' => [ $category->id ] ] )}}">
 						<div class="p-4 md:p-5">
 							<div class="flex items-center justify-between">
 								<div class="flex items-center">
