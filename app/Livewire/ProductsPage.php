@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Helpers\CartManagment;
+use App\Livewire\Partials\Navbar;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
@@ -11,10 +13,12 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 #[Title('Products-Friday') ]
 class ProductsPage extends Component {
 	use WithPagination;
+	use LivewireAlert;
 	#[Url ]
 	public $selectedCategories = [];
 
@@ -40,6 +44,14 @@ class ProductsPage extends Component {
 	#[Computed(true, 120) ]
 	public function maxPrice(): float {
 		return Product::max( 'price' );
+	}
+
+
+	public function addToCart( $productId ) {
+		$totalCount = CartManagment::addItemToCart( $productId );
+		// $totalCount = 5;
+		$this->dispatch( 'updateTotalCount', $totalCount )->to( Navbar::class);
+		$this->alert( 'success', 'Product added to the cart successfully' );
 	}
 
 	public function render() {

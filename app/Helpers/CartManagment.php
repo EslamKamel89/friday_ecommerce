@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Cookie;
 
 class CartManagment {
 	//! add item to cart
-	static public function addItemToCart( $productId ) {
+	static public function addItemToCart( $productId, $currentQuantity = 1 ) {
 		$cartItems = self::getCartItems();
 		$existingItem = null;
 		foreach ( $cartItems as $key => $item ) {
@@ -16,23 +16,28 @@ class CartManagment {
 			}
 		}
 		if ( $existingItem !== null ) {
-			$cartItems[ $existingItem ]['quantity']++;
+			$cartItems[ $existingItem ]['quantity'] += $currentQuantity;
 			$cartItems[ $existingItem ]['total_amount'] =
 				$cartItems[ $existingItem ]['quantity'] * $cartItems[ $existingItem ]['unit_amount'];
-			return;
+			return count( $cartItems );
 		}
 		$product = Product::find( $productId );
+		// info( 'product', [ $product ] );
+		// info( 'productId', [ $productId ] );
+		// dd();
 		if ( $product ) {
 			$cartItems[] = [ 
 				'product_id' => $product->id,
 				'name' => $product->name,
-				'image' => $product->iamges[0],
+				'image' => $product->images[0],
 				'quantity' => 1,
 				'unit_amount' => $product->price,
 				'total_amount' => $product->price,
 			];
 		}
 		self::addCartItemsToCookie( $cartItems );
+		info( 'cartItems', [ $cartItems ] );
+		info( 'cartItemsCount', [ count( $cartItems ) ] );
 		return count( $cartItems );
 	}
 	//! remove item from cart
@@ -61,7 +66,7 @@ class CartManagment {
 	//! get all cart items from cookie
 	static public function getCartItems() {
 		$cartItems = json_decode( Cookie::get( 'cartItems' ), true );
-		if ( $cartItems ) {
+		if ( ! $cartItems ) {
 			return [];
 		}
 		return $cartItems;

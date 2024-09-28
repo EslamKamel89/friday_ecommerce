@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Resources\OrderResource\Widgets\OrderStats;
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -54,6 +55,7 @@ class AdminPanelProvider extends PanelProvider {
 			->authMiddleware( [ 
 				Authenticate::class,
 			] )->sidebarCollapsibleOnDesktop()
-			->collapsedSidebarWidth( '12rem' );
+			->collapsedSidebarWidth( '12rem' )
+			->defaultThemeMode( ThemeMode::Dark );
 	}
 }
