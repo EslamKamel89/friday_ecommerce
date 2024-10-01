@@ -24,7 +24,7 @@ Route::get( '/products/{product:slug}', ProductDetailPage::class)->name( 'produc
 
 
 Route::middleware( 'guest' )->group( function () {
-	Route::get( '/login', LoginPage::class)->name( 'loging' );
+	Route::get( '/login', LoginPage::class)->name( 'login' );
 	Route::get( '/register', RegisterPage::class)->name( 'register' );
 	Route::get( '/forget', ForgetPasswordPage::class)->name( 'forget' );
 	Route::get( '/reset', ResetPasswordPage::class)->name( 'reset' );

@@ -125,11 +125,13 @@
                     <!-- Total  -->
                     <!-- Checkout Button  --------------------------------------------------->
                      @if($cartItems)
-                     <button
-                     class="mt-4 w-full rounded-lg bg-blue-500 px-4 py-2 text-white"
+                     <a
+                     wire:navigate
+                     href="{{route('checkout')}}"
+                     class="mt-4 w-full block text-center rounded-lg bg-blue-500 px-4 py-2 text-white"
                      >
                      Checkout
-                    </button>
+                    </a>
                     @endif
                     <!-- Checkout Button  -->
                 </div>
