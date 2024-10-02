@@ -24,7 +24,11 @@
                                 <!-- Form Group -->
                                 <div>
                                     @if ( session( 'error' ) )
-										<p class="text-red-500 my-3 ">{{session( 'error' )}}</p>
+										<div class="my-2 bg-red-500 text-sm text-white rounded-lg p-4" role="alert"
+											tabindex="-1" aria-labelledby="hs-solid-color-danger-label">
+											<span id="hs-solid-color-danger-label" class="font-bold">Error</span>
+											{{ session( 'error' ) }}
+										</div>
 									@endif
 
                                     <label for="email" class="block text-sm mb-2 dark:text-white">Email address</label>
