@@ -202,8 +202,13 @@
                 <!-- Order Summary -->
                 <!-- Place Order Button ------------------------------------------------------------------->
                 <button type="submit"
-                    class="bg-green-500 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-green-600">
-                    Place Order
+                    class=" flex items-center justify-center gap-2 bg-green-500 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-green-600 h-16">
+                    <span>
+                        Place Order
+                    </span>
+                    <span wire:loading>
+                        <x-common.spinner />
+                    </span>
                 </button>
                 <!-- Place Order Button -->
                 <!-- Basket Summary ------------------------------------------------------------------->
